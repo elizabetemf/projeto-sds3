@@ -1,10 +1,40 @@
+import axios from 'axios';
 import Chart from 'react-apexcharts';
+import { SaleSum } from 'types/sale';
+import { BASE_URL } from 'utils/requests';
+
+type ChartData  = {
+    labels : string[];
+    series : number[]
+}
 
 const DonutChart = () => {
-    const mockData = {
-        series: [477138, 499928, 444867, 220426, 473088],
-        labels: ['Anakin', 'Barry Allen', 'Kal-El', 'Logan', 'Padmé']
-    }
+   
+    //FORMA ERRADA, declarar a variavel desse jeito: let chartData, no proximo passo vai usar react-roots
+    let chartData : ChartData = { labels: [], series: []};
+
+    //FORMA ERRADA ainda
+//    axios.get(`${BASE_URL}/sales/amount-by-seller`)
+//    .then( (response) => {
+//        console.log(response.data);
+//    })
+
+    //FORMA ERRADA
+    axios.get(`${BASE_URL}/sales/amount-by-seller`)
+        .then( (response) => {
+            const data = response.data as SaleSum[];
+            const myLabels = data.map( x => x.sellerName);
+            const mySum = data.map( x => x.sum);
+
+            chartData = { labels: myLabels, series: mySum};
+
+            //console.log(response.data);
+            console.log(chartData);
+        })
+//    const mockData = {
+//        series: [477138, 499928, 444867, 220426, 473088],
+//        labels: ['Anakin', 'Barry Allen', 'Kal-El', 'Logan', 'Padmé']
+//    }
 
     const options = {
         legend: {
@@ -13,8 +43,8 @@ const DonutChart = () => {
     }
     return (
         <Chart
-            options={{ ...options, labels: mockData.labels }}
-            series={mockData.series}
+            options={{ ...options, labels: chartData.labels }}
+            series={chartData.series}
             type="donut"
             height="240"
         />
