@@ -2,7 +2,7 @@
 
 <b>Projeto desenvolvido na Semana Spring React - SDS 3.0! 
 
-Com o professor Nelio Lopes
+Com o professor Nelio Alves
 
 
 Frontend em React e backend em Spring.
